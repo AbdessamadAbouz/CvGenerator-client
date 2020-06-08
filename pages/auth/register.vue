@@ -4,6 +4,7 @@
       <div class="card mt-4">
         <div class="card-header">
           <p class='mb-0'>Register</p>
+          {{errors}}
         </div>
         <div class="card-body">
           <form @submit.prevent="Register">
@@ -11,29 +12,29 @@
               <label>Name</label>
               <input v-model="form.name" type="text" class="form-control" :class="{ 'is-invalid': errors.name }" placeholder="Name">
             </div>
-            <div class="invalid-feedback" v-if="errors.name">
-              {{errors.name}}
+            <div v-if="errors.name">
+              <p>{{errors.name[0]}}</p>
             </div>
             <div class="form-group">
               <label>Email</label>
               <input v-model="form.email" type="email" class="form-control" :class="{'is-invalid': errors.email}" placeholder="Email">
             </div>
-            <div class="invalid-feedback" v-if="errors.email">
-              {{errors.email}}
+            <div v-if="errors.email">
+              {{errors.email[0]}}
             </div>
             <div class="form-group">
               <label>Password</label>
               <input v-model="form.password" type="password" class="form-control" :class="{'is-invalid': errors.password}" placeholder="Password">
             </div>
-            <div class="invalid-feedback" v-if="errors.password">
-              {{errors.password}}
+            <div v-if="errors.password">
+              {{errors.password[0]}}
             </div>
             <div class="form-group">
               <label>Confirm password</label>
               <input v-model="form.password_confirmation" type="password" class="form-control" :class="{'is-invalid': errors.password_confirmation}" placeholder="Confirm your Password">
             </div>
-            <div class="invalid-feedback" v-if="errors.password_confirmation">
-              {{errors.password_confirmation}}
+            <div v-if="errors.password_confirmation">
+              {{errors.password_confirmation[0]}}
             </div>
             <div class="form-group">
               <input type="submit" value="Register" class="btn btn-default w-100">
@@ -59,12 +60,14 @@ export default {
   },
   methods: {
     async Register() {
-      await this.$axios.post('/auth/register', this.form);
+      try {
+        await this.$axios.post('/auth/register', this.form);
+        this.$auth.login({data: this.form});
+        this.$auth.push({name: 'index'});
+      } catch(e) {
+        //
+      }
 
-
-      this.$auth.login({data: this.form});
-
-      this.$auth.push({name: 'index'});
     }
   }
 }
