@@ -19,6 +19,12 @@ export default {
   ** Customize the progress-bar color
   */
   loading: { color: '#fff' },
+
+  router: {
+    middleware: [
+      'clearValidationErrors'
+    ]
+  },
   /*
   ** Global CSS
   */
@@ -28,6 +34,8 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
+    './plugins/mixins/validation',
+    './plugins/axios'
   ],
 
   auth: {
@@ -80,7 +88,7 @@ export default {
     /*
     ** You can extend webpack config here
     */
-    extartCss: true,
+    extartCSS: true,
     extend (config, ctx) {
     }
   }

@@ -9,19 +9,31 @@
           <form @submit.prevent="Register">
             <div class="form-group">
               <label>Name</label>
-              <input v-model="form.name" type="text" class="form-control" placeholder="Name">
+              <input v-model="form.name" type="text" class="form-control" :class="{ 'is-invalid': errors.name }" placeholder="Name">
+            </div>
+            <div class="invalid-feedback" v-if="errors.name">
+              {{errors.name}}
             </div>
             <div class="form-group">
               <label>Email</label>
-              <input v-model="form.email" type="email" class="form-control" placeholder="Email">
+              <input v-model="form.email" type="email" class="form-control" :class="{'is-invalid': errors.email}" placeholder="Email">
+            </div>
+            <div class="invalid-feedback" v-if="errors.email">
+              {{errors.email}}
             </div>
             <div class="form-group">
               <label>Password</label>
-              <input v-model="form.password" type="password" class="form-control" placeholder="Password">
+              <input v-model="form.password" type="password" class="form-control" :class="{'is-invalid': errors.password}" placeholder="Password">
+            </div>
+            <div class="invalid-feedback" v-if="errors.password">
+              {{errors.password}}
             </div>
             <div class="form-group">
               <label>Confirm password</label>
-              <input v-model="form.password_confirmation" type="password" class="form-control" placeholder="Confirm your Password">
+              <input v-model="form.password_confirmation" type="password" class="form-control" :class="{'is-invalid': errors.password_confirmation}" placeholder="Confirm your Password">
+            </div>
+            <div class="invalid-feedback" v-if="errors.password_confirmation">
+              {{errors.password_confirmation}}
             </div>
             <div class="form-group">
               <input type="submit" value="Register" class="btn btn-default w-100">
@@ -48,6 +60,7 @@ export default {
   methods: {
     async Register() {
       await this.$axios.post('/auth/register', this.form);
+
 
       this.$auth.login({data: this.form});
 
