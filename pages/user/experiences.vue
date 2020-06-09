@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container">
-      <h1>Home</h1>
+      <h1>Experiences</h1>
 
     </div>
     <div class='col-md-3'>
@@ -11,12 +11,16 @@
 </template>
 
 <script>
-import SideBar from '../layouts/partials/SideBar';
+import SideBar from '../../layouts/partials/SideBar';
 
 export default {
+  middleware: 'auth',
   components: {
     SideBar
   }
 }
 </script>
 
+<style>
+
+</style>

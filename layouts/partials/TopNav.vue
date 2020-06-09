@@ -11,15 +11,28 @@
           </li>
         </b-navbar-nav>
 
+        <template v-if="authenticated">
+          <b-navbar-nav class='ml-auto'>
+            <li class="nav-item">
+              <nuxt-link class='nav-link' to="/user/dashboard">{{user.name}}</nuxt-link>
+            </li>
+            <li class="nav-item">
+              <b-nav-item @click.prevent="signOut">logout</b-nav-item>
+            </li>
+          </b-navbar-nav>
+        </template>
+        
+        <template v-else>
+          <b-navbar-nav class='ml-auto'>
+            <li class="nav-item">
+              <nuxt-link class='nav-link' to="/auth/login">Login</nuxt-link>
+            </li>
+            <li class="nav-item">
+              <nuxt-link class='nav-link' to="/auth/register">Register</nuxt-link>
+            </li>
+          </b-navbar-nav>
+        </template>
 
-        <b-navbar-nav class='ml-auto'>
-          <li class="nav-item">
-            <nuxt-link class='nav-link' to="/auth/login">Login</nuxt-link>
-          </li>
-          <li class="nav-item">
-            <nuxt-link class='nav-link' to="/auth/register">Register</nuxt-link>
-          </li>
-        </b-navbar-nav>
       </div>
     </b-navbar>
   </div>
@@ -27,7 +40,12 @@
 
 <script>
 export default {
+  methods: {
+    signOut() {
+      this.$auth.logout();
 
+    }
+  }
 }
 </script>
 
