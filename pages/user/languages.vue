@@ -36,7 +36,7 @@
               <div class="form-group">
                 <template v-if="form.id">
                   <input type="submit" value="Update your language" class="btn btn-default w-100">
-                  <a href="#" @click="editLangue(langue)">
+                  <a href="#" @click="clear()">
                     Add new element..
                   </a>
                 </template>
