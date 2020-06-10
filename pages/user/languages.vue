@@ -15,7 +15,9 @@
           </div>
           <div class="card-body">
             <form @submit.prevent="storeOrUpdate(form.id)">
-              id of item to update : {{form.id}}
+              <template v-if="form.id">
+                id of item to update : {{form.id}}
+              </template>
               <div class="form-group" :class="{ 'is-invalid mb-0': errors.label }">
                 <label>Label</label>
                 <input v-model="form.label" type="text" class="form-control" placeholder="Label (Ex: English, French, ...)">
@@ -34,6 +36,9 @@
               <div class="form-group">
                 <template v-if="form.id">
                   <input type="submit" value="Update your language" class="btn btn-default w-100">
+                  <a href="#" @click="editLangue(langue)">
+                    Add new element..
+                  </a>
                 </template>
                 <template v-else>
                   <input type="submit" value="Store your language" class="btn btn-default w-100">
@@ -108,7 +113,10 @@ export default {
     async storeOrUpdate(id) {
       if(!id) {
         try {
-          this.$axios.post('/user/langues',this.form).then(response => (this.message = response.data.message));
+          this.$axios.post('/user/langues',this.form).then(response => (
+            this.message = response.data.message,
+            this.clear()
+          ));
           this.getlanguages();
         } catch(e) {
         }
@@ -117,10 +125,12 @@ export default {
         this.$axios.put('user/langues/'+id, this.form).then(response => {
           this.message = response.data.message;
           this.getlanguages();
+          this.clear();
       }).catch(e=> {
           this.message = e;
       });
       }
+      
     },
     async getlanguages() {
       this.$axios.get('/user/langues').then(response => (this.langues = response));
@@ -138,11 +148,19 @@ export default {
       this.form.id = langue.id;
       this.form.label = langue.label;
       this.form.level = langue.level;
+    },
+    clear() {
+      this.form.id = null;
+      this.form.label = '';
+      this.form.level = null;
+    },
+    clearMessages() {
+      this.message = '';
     }
   },
   created() {
     this.getlanguages();
-    // setInterval(() => this.getlanguages(),10000);
+    setInterval(() => this.clearMessages(),30000);
   }
 }
 </script>
