@@ -11,21 +11,33 @@
       <div class="col-md-6">
         <div class="card mt-4">
           <div class="card-header">
-            <p class='mb-0'>Add new language</p>
+            <p class='mb-0'>Add or update new language</p>
           </div>
           <div class="card-body">
-            <form @submit.prevent="store">
-              <div class="form-group">
+            <form @submit.prevent="storeOrUpdate(form.id)">
+              id of item to update : {{form.id}}
+              <div class="form-group" :class="{ 'is-invalid mb-0': errors.label }">
                 <label>Label</label>
                 <input v-model="form.label" type="text" class="form-control" placeholder="Label (Ex: English, French, ...)">
               </div>
-              <div class="form-group">
+              <div class="invalid-feedback d-block" v-if="errors.label">
+              {{errors.label[0]}}
+              </div>
+              <div class="form-group" :class="{ 'is-invalid mb-0': errors.level }">
                 <label>Level</label>
                 <b-form-select v-model="form.level" :options="options"></b-form-select>
               </div>
+              <div class="invalid-feedback d-block" v-if="errors.level">
+                {{errors.level[0]}}
+              </div>
               {{message}}
               <div class="form-group">
-                <input type="submit" value="Store your language" class="btn btn-default w-100">
+                <template v-if="form.id">
+                  <input type="submit" value="Update your language" class="btn btn-default w-100">
+                </template>
+                <template v-else>
+                  <input type="submit" value="Store your language" class="btn btn-default w-100">
+                </template>
               </div>
             </form>
           </div>
@@ -83,6 +95,7 @@ export default {
           { value: 'advanced', text: 'Advanced' }
         ],
         form: {
+          id: null,
           label: '',
           level: null
         },
@@ -92,15 +105,22 @@ export default {
       }
   },
   methods: {
-    async store() {
-      try {
-        this.$axios.post('/user/langues',this.form);
-        this.getlanguages();
-        this.message = 'stored succesfully';
-      } catch(e) {
-        this.message = e;
+    async storeOrUpdate(id) {
+      if(!id) {
+        try {
+          this.$axios.post('/user/langues',this.form).then(response => (this.message = response.data.message));
+          this.getlanguages();
+        } catch(e) {
+        }
       }
-
+      else {
+        this.$axios.put('user/langues/'+id, this.form).then(response => {
+          this.message = response.data.message;
+          this.getlanguages();
+      }).catch(e=> {
+          this.message = e;
+      });
+      }
     },
     async getlanguages() {
       this.$axios.get('/user/langues').then(response => (this.langues = response));
@@ -114,8 +134,10 @@ export default {
       });
 
     },
-    editLangue($langue) {
-
+    editLangue(langue) {
+      this.form.id = langue.id;
+      this.form.label = langue.label;
+      this.form.level = langue.level;
     }
   },
   created() {
