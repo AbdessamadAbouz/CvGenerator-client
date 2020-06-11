@@ -73,6 +73,12 @@
           <b-card :header="form.id + ' - ' + form.label" :key="form.id" class="col-md-4">
             <p :key="form.id"><strong>{{form.label}}</strong> {{form.titre}}, {{form.nom_ecole}}.</p>
             <p :key="form.id">From : {{form.date_debut}} To : {{form.date_fin}}</p>
+            <a href="#" @click="editFormation(form)">
+              Update
+            </a> -
+            <a href="#" @click="deleteFormation(form)">
+              Delete
+            </a>
           </b-card>
         </template>
       </b-card-group>
@@ -129,7 +135,7 @@ export default {
     async getformations() {
       this.$axios.get('/user/formations').then(response => (this.formations = response.data.formations));
     },
-    deleteLangue(id) {
+    deleteFormation(id) {
       this.$axios.delete('user/formations/'+id).then(response => {
           this.message = response.data.message;
           this.getformations();
@@ -139,7 +145,12 @@ export default {
 
     },
     editFormation(formation) {
-      
+      this.form.id = formation.id;
+      this.form.label = formation.label;
+      this.form.titre = formation.titre;
+      this.form.nom_ecole = formation.nom_ecole;
+      this.form.date_debut = formation.date_debut;
+      this.form.date_fin = formation.date_fin;
     },
     clear() {
       this.form.id = null;
