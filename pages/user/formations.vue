@@ -67,21 +67,22 @@
       </div>
     </div>
     <div class="container">
-    <div class="row-fluid">
-      <b-card-group class="row cols-3" deck>
-        <template v-for="form in formations">
-          <b-card :header="form.id + ' - ' + form.label" :key="form.id" class="flex-column col-xs-6 col-sm-4 col-md-4">
-            <p :key="form.id"><strong>{{form.label}}</strong> {{form.titre}}, {{form.nom_ecole}}.</p>
-            <p :key="form.id">From : {{form.date_debut}} To : {{form.date_fin}}</p>
-            <a href="#" @click="editFormation(form)">
+    <div class="row">
+        <template v-for="(formation,index) in formations">
+          <b-card-group class="row"  :v-if="index%3" :key="index" deck>
+          <b-card :header="formation.id + ' - ' + formation.label" :key="formation.id" class="p-3 m-4">
+            <b-card-text><strong>{{formation.label}}</strong> {{formation.titre}}.</b-card-text>
+            <b-card-text> {{formation.nom_ecole}}.</b-card-text>
+            <b-card-text>From : {{formation.date_debut}} To : {{formation.date_fin}}</b-card-text>
+            <a href="#" @click="editFormation(formation)">
               Update
             </a> -
-            <a href="#" @click="deleteFormation(form.id)">
+            <a href="#" @click="deleteFormation(formation.id)">
               Delete
             </a>
           </b-card>
+            </b-card-group>
         </template>
-      </b-card-group>
     </div>
     </div>
   </div>
