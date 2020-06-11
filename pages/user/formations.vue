@@ -67,16 +67,16 @@
       </div>
     </div>
     <div class="container">
-    <div class="row-odd-col">
-      <b-card-group deck>
+    <div class="row-fluid">
+      <b-card-group class="row cols-3" deck>
         <template v-for="form in formations">
-          <b-card :header="form.id + ' - ' + form.label" :key="form.id" class="col-md-4">
+          <b-card :header="form.id + ' - ' + form.label" :key="form.id" class="flex-column col-xs-6 col-sm-4 col-md-4">
             <p :key="form.id"><strong>{{form.label}}</strong> {{form.titre}}, {{form.nom_ecole}}.</p>
             <p :key="form.id">From : {{form.date_debut}} To : {{form.date_fin}}</p>
             <a href="#" @click="editFormation(form)">
               Update
             </a> -
-            <a href="#" @click="deleteFormation(form)">
+            <a href="#" @click="deleteFormation(form.id)">
               Delete
             </a>
           </b-card>
