@@ -108,12 +108,13 @@
               
               <div class="form-group" :class="{ 'is-invalid mb-0': errors.profil_picture }">
                 <label>Profil picture</label>
-                <b-form-file
-                  v-model="form.profil_picture"
-                  placeholder="Choose a file or drop it here..."
-                  drop-placeholder="Drop file here..."
-                ></b-form-file>
+                <input type="file"
+                  id="file"
+                  ref="file"
+                  v-on:change="handleFileUpload()"
+                />
               </div>
+              {{file}}
               <div class="invalid-feedback d-block" v-if="errors.profil_picture">
               {{errors.profil_picture[0]}}
               </div>
@@ -164,8 +165,8 @@ export default {
           github: '',
           facebook: '',
           portfolio: '',
-          profil_picture: null
         },
+        file: '',
         message: '',
         personal_infos: null,
       }
@@ -173,10 +174,31 @@ export default {
   methods: {
     async storeOrUpdate(id) {
       if(!id) {
+        let form_data = new FormData();
+        form_data.append('nom', this.form.nom);
+        form_data.append('prenom', this.form.prenom);
+        form_data.append('email', this.form.email);
+        form_data.append('phone', this.form.phone);
+        form_data.append('adresse', this.form.adresse);
+        form_data.append('propos', this.form.propos);
+        form_data.append('code_postal', this.form.code_postal);
+        form_data.append('linkedin', this.form.linkedin);
+        form_data.append('github', this.form.github);
+        form_data.append('facebook', this.form.facebook);
+        form_data.append('portfolio', this.form.portfolio);
+
+        if(this.file != '')
+        {
+          form_data.append('profil_picture' , this.file);
+        }
         try {
-          this.$axios.post('/user/personal-infos',this.form).then(response => (
-            this.message = response.data.message,
-            this.clear()
+          this.$axios.post('/user/personal-infos',form_data, {
+              headers: {
+                  'Content-Type': 'multipart/form-data'
+              }
+            }).then(response => (
+              this.message = response.data.message,
+              this.clear()
           ));
           this.getPersonalInfos();
         } catch(e) {
@@ -234,9 +256,13 @@ export default {
           this.form.facebook = '';
           this.form.portfolio = '';
           this.form.profil_picture = null;
+          this.file = '';
     },
     clearMessages() {
       this.message = '';
+    },
+    handleFileUpload(){
+      this.file = this.$refs.file.files[0];
     }
   },
   created() {
