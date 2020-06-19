@@ -173,24 +173,24 @@ export default {
   },
   methods: {
     async storeOrUpdate(id) {
-      if(!id) {
-        let form_data = new FormData();
-        form_data.append('nom', this.form.nom);
-        form_data.append('prenom', this.form.prenom);
-        form_data.append('email', this.form.email);
-        form_data.append('phone', this.form.phone);
-        form_data.append('adresse', this.form.adresse);
-        form_data.append('propos', this.form.propos);
-        form_data.append('code_postal', this.form.code_postal);
-        form_data.append('linkedin', this.form.linkedin);
-        form_data.append('github', this.form.github);
-        form_data.append('facebook', this.form.facebook);
-        form_data.append('portfolio', this.form.portfolio);
+      let form_data = new FormData();
+      form_data.append('nom', this.form.nom);
+      form_data.append('prenom', this.form.prenom);
+      form_data.append('email', this.form.email);
+      form_data.append('phone', this.form.phone);
+      form_data.append('adresse', this.form.adresse);
+      form_data.append('propos', this.form.propos);
+      form_data.append('code_postal', this.form.code_postal);
+      form_data.append('linkedin', this.form.linkedin);
+      form_data.append('github', this.form.github);
+      form_data.append('facebook', this.form.facebook);
+      form_data.append('portfolio', this.form.portfolio);
 
-        if(this.file != '')
-        {
-          form_data.append('profil_picture' , this.file);
-        }
+      if(this.file != '')
+      {
+        form_data.append('profil_picture' , this.file);
+      }
+      if(!id) {
         try {
           this.$axios.post('/user/personal-infos',form_data, {
               headers: {
@@ -205,10 +205,14 @@ export default {
         }
       }
       else {
-        this.$axios.put('user/personal-infos/'+id, this.form).then(response => {
-          this.message = response.data.message;
-          this.getPersonalInfos();
-          this.clear();
+        this.$axios.put('user/personal-infos/'+id, form_data, {
+              headers: {
+                  'Content-Type': 'multipart/form-data'
+              }
+            }).then(response => {
+              this.message = response.data.message;
+              this.getPersonalInfos();
+              this.clear();
       }).catch(e=> {
           this.message = e;
       });
@@ -240,7 +244,6 @@ export default {
       this.form.github = personal_info.github;
       this.form.facebook = personal_info.facebook;
       this.form.portfolio = personal_info.portfolio;
-      this.form.profil_picture = null;
     },
     clear() {
           this.form.id = null;
@@ -255,7 +258,6 @@ export default {
           this.form.github = '';
           this.form.facebook = '';
           this.form.portfolio = '';
-          this.form.profil_picture = null;
           this.file = '';
     },
     clearMessages() {
