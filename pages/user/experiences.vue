@@ -41,11 +41,11 @@
               <div class="invalid-feedback d-block" v-if="errors.description">
               {{errors.description[0]}}
               </div>
-              <div class="form-group" :class="{ 'is-invalid mb-0': errors.date_debut }">              
+              <div class="form-group" :class="{ 'is-invalid mb-0': errors.date_debut }">
                 <label>Starting date</label>
                 <b-form-datepicker v-model="form.date_debut" class="mb-2"></b-form-datepicker>
               </div>
-              <div class="form-group" :class="{ 'is-invalid mb-0': errors.date_fin }">              
+              <div class="form-group" :class="{ 'is-invalid mb-0': errors.date_fin }">
                 <label>End date</label>
                 <b-form-datepicker v-model="form.date_fin" class="mb-2"></b-form-datepicker>
               </div>
@@ -68,12 +68,12 @@
     </div>
     <div class="container">
     <div class="row">
-        <template v-for="(experience,index) in experiences">
-          <b-card-group class="row"  :v-if="index%3" :key="index" deck>
-          <b-card :header="experience.id + ' - ' + experience.label" :key="experience.id" class="p-3 m-4">
-            <p :key="experience.id"><strong>{{experience.label}}</strong> {{experience.societe}}.</p>
+        <template v-for="experience in experiences">
+          <!-- <b-card-group class="row"  :v-if="index%3" :key="index" deck> -->
+          <b-card :header="experience.id + ' - ' + experience.label" :id="experience.id" class="p-3 m-4">
+            <p><strong>{{experience.label}}</strong> {{experience.societe}}.</p>
             <p> {{experience.description}}.</p>
-            <p :key="experience.id">From : {{experience.date_debut}} To : {{experience.date_fin}}</p>
+            <p>From : {{experience.date_debut}} To : {{experience.date_fin}}</p>
             <a href="#" @click="editExperience(experience)">
               Update
             </a> -
@@ -81,7 +81,7 @@
               Delete
             </a>
           </b-card>
-            </b-card-group>
+            <!-- </b-card-group> -->
         </template>
     </div>
     </div>
@@ -131,7 +131,7 @@ export default {
           this.message = e;
       });
       }
-      
+
     },
     async getexperiences() {
       this.$axios.get('/user/experiences').then(response => (this.experiences = response.data.experiences));

@@ -4,11 +4,11 @@
       <h1>Languages</h1>
 
     </div>
-    <div class="row">
+    <div class="row px-4">
       <div class='col-md-3'>
         <side-bar />
       </div>
-      <div class="col-md-6">
+      <div class="col-md-8">
         <div class="card mt-4">
           <div class="card-header">
             <p class='mb-0'>Add or update new language</p>
@@ -47,38 +47,40 @@
             </form>
           </div>
         </div>
+
+        <div class="pt-5" v-if="langues">
+          <table class="table table-sm">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Language label</th>
+                <th scope="col">Level</th>
+                <th scope="col">Edit/Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <template v-for="langue in langues.data.langues">
+              <tr :key="langue.id">
+                <th scope="row">{{langue.id}}</th>
+                <td>{{langue.label}}</td>
+                <td>{{langue.level}}</td>
+                <td>
+                  <a href="#" @click="editLangue(langue)">
+                    Edit
+                  </a>
+                  /
+                  <a href="#" @click="deleteLangue(langue.id)">
+                      Delete
+                  </a></td>
+              </tr>
+              </template>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
-    <div class="col-md-8 offset-md-2 mt-4" v-if="langues">
-      <table class="table table-sm">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Language label</th>
-      <th scope="col">Level</th>
-      <th scope="col">Edit/Delete</th>
-    </tr>
-  </thead>
-  <tbody>
 
-    <template v-for="langue in langues.data.langues">
-    <tr :key="langue.id">
-      <th scope="row">{{langue.id}}</th>
-      <td>{{langue.label}}</td>
-      <td>{{langue.level}}</td>
-      <td>
-        <a href="#" @click="editLangue(langue)">
-          Edit
-        </a>
-        /
-        <a href="#" @click="deleteLangue(langue.id)">
-            Delete
-        </a></td>
-    </tr>
-    </template>
-  </tbody>
-</table>
-    </div>
 
   </div>
 </template>
@@ -130,7 +132,7 @@ export default {
           this.message = e;
       });
       }
-      
+
     },
     async getlanguages() {
       this.$axios.get('/user/langues').then(response => (this.langues = response));

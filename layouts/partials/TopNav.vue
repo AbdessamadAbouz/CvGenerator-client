@@ -14,14 +14,14 @@
         <template v-if="authenticated">
           <b-navbar-nav class='ml-auto'>
             <li class="nav-item">
-              <nuxt-link class='nav-link' to="/user/dashboard">{{user.name}}</nuxt-link>
+              <nuxt-link class='nav-link' to="/dashboard">{{user.name}}</nuxt-link>
             </li>
             <li class="nav-item">
               <b-nav-item @click.prevent="signOut">logout</b-nav-item>
             </li>
           </b-navbar-nav>
         </template>
-        
+
         <template v-else>
           <b-navbar-nav class='ml-auto'>
             <li class="nav-item">

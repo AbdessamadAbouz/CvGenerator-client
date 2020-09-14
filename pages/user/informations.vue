@@ -25,7 +25,7 @@
               <div class="invalid-feedback d-block" v-if="errors.nom">
               {{errors.nom[0]}}
               </div>
-              
+
               <div class="form-group" :class="{ 'is-invalid mb-0': errors.prenom }">
                 <label>First Name</label>
                 <input v-model="form.prenom" type="text" class="form-control" placeholder="First Name (Ex: English, French, ...)">
@@ -33,7 +33,7 @@
               <div class="invalid-feedback d-block" v-if="errors.prenom">
               {{errors.prenom[0]}}
               </div>
-              
+
               <div class="form-group" :class="{ 'is-invalid mb-0': errors.email }">
                 <label>Email</label>
                 <input v-model="form.email" type="email" class="form-control" placeholder="Email (Ex: English, French, ...)">
@@ -41,7 +41,7 @@
               <div class="invalid-feedback d-block" v-if="errors.email">
               {{errors.email[0]}}
               </div>
-              
+
               <div class="form-group" :class="{ 'is-invalid mb-0': errors.phone }">
                 <label>Phone Number</label>
                 <input v-model="form.phone" type="text" class="form-control" placeholder="Last Name (Ex: English, French, ...)">
@@ -49,7 +49,7 @@
               <div class="invalid-feedback d-block" v-if="errors.phone">
               {{errors.phone[0]}}
               </div>
-              
+
               <div class="form-group" :class="{ 'is-invalid mb-0': errors.adresse }">
                 <label>Address</label>
                 <input v-model="form.adresse" type="text" class="form-control" placeholder="Address (Ex: English, French, ...)">
@@ -65,7 +65,7 @@
               <div class="invalid-feedback d-block" v-if="errors.propos">
               {{errors.propos[0]}}
               </div>
-              
+
               <div class="form-group" :class="{ 'is-invalid mb-0': errors.code_postal }">
                 <label>Postal Code</label>
                 <input v-model="form.code_postal" type="text" class="form-control" placeholder="Last Name (Ex: English, French, ...)">
@@ -73,7 +73,7 @@
               <div class="invalid-feedback d-block" v-if="errors.code_postal">
               {{errors.code_postal[0]}}
               </div>
-              
+
               <div class="form-group" :class="{ 'is-invalid mb-0': errors.linkedin }">
                 <label>LinkedIn profile</label>
                 <input v-model="form.linkedin" type="text" class="form-control" placeholder="LinkedIn (Ex: English, French, ...)">
@@ -81,7 +81,7 @@
               <div class="invalid-feedback d-block" v-if="errors.linkedin">
               {{errors.linkedin[0]}}
               </div>
-              
+
               <div class="form-group" :class="{ 'is-invalid mb-0': errors.github }">
                 <label>github</label>
                 <input v-model="form.github" type="text" class="form-control" placeholder="github (Ex: English, French, ...)">
@@ -89,7 +89,7 @@
               <div class="invalid-feedback d-block" v-if="errors.github">
               {{errors.github[0]}}
               </div>
-              
+
               <div class="form-group" :class="{ 'is-invalid mb-0': errors.facebook }">
                 <label>Facebook account</label>
                 <input v-model="form.facebook" type="text" class="form-control" placeholder="Facebook profil (Ex: English, French, ...)">
@@ -97,7 +97,7 @@
               <div class="invalid-feedback d-block" v-if="errors.facebook">
               {{errors.facebook[0]}}
               </div>
-              
+
               <div class="form-group" :class="{ 'is-invalid mb-0': errors.portfolio }">
                 <label>Portfolio address</label>
                 <input v-model="form.portfolio" type="text" class="form-control" placeholder="Portfolio address (Ex: English, French, ...)">
@@ -105,7 +105,7 @@
               <div class="invalid-feedback d-block" v-if="errors.portfolio">
               {{errors.portfolio[0]}}
               </div>
-              
+
               <div class="form-group" :class="{ 'is-invalid mb-0': errors.profil_picture }">
                 <label>Profil picture</label>
                 <input type="file"
@@ -114,22 +114,21 @@
                   v-on:change="handleFileUpload()"
                 />
               </div>
-              {{file}}
               <div class="invalid-feedback d-block" v-if="errors.profil_picture">
               {{errors.profil_picture[0]}}
               </div>
-              
+
 
               {{message}}
               <div class="form-group">
                 <template v-if="form.id">
-                  <input type="submit" value="Update your language" class="btn btn-default w-100">
+                  <input type="submit" value="Update your Information" class="btn btn-default w-100">
                   <a href="#" @click="clear()">
                     Add new element..
                   </a>
                 </template>
                 <template v-else>
-                  <input type="submit" value="Store your language" class="btn btn-default w-100">
+                  <input type="submit" value="Store your Information" class="btn btn-default w-100">
                 </template>
               </div>
             </form>
@@ -137,8 +136,6 @@
         </div>
       </div>
     </div>
-    
-    {{personal_infos}}
   </div>
 </template>
 
@@ -217,7 +214,7 @@ export default {
           this.message = e;
       });
       }
-      
+
     },
     async getPersonalInfos() {
       this.$axios.get('/user/personal-infos').then(response => (this.personal_infos = response.data.personal_infos));
