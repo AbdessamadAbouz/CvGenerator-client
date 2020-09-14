@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="col-md-6 offset-md-3">
+    <div class="col-md-6 offset-md-3 pb-5">
       <div class="card mt-4">
         <div class="card-header">
           <p class='mb-0'>Login</p>
@@ -25,7 +25,7 @@
         </div>
       </div>
     </div>
-  </div>  
+  </div>
 </template>
 
 <script>
@@ -40,6 +40,12 @@ export default {
       message: null,
     }
   },
+  beforeMount() {
+    if(this.$auth.user)
+    {
+      window.location.replace('/');
+    }
+  },
   methods: {
     async Register() {
       this.message = null;
@@ -51,7 +57,7 @@ export default {
       }
 
     }
-  }
+  },
 }
 </script>
 

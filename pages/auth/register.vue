@@ -5,7 +5,7 @@
         <div class="card-header">
           <p class='mb-0'>Register</p>
         </div>
-        <div class="card-body">
+        <div class="card-body pb-10">
           <form @submit.prevent="Register">
             <div class="form-group mb-0">
               <label>Name</label>
@@ -41,7 +41,7 @@
         </div>
       </div>
     </div>
-  </div>  
+  </div>
 </template>
 
 <script>
@@ -55,6 +55,12 @@ export default {
         password: '',
         password_confirmation: '',
       }
+    }
+  },
+  beforeMount() {
+    if(this.$auth.user)
+    {
+      window.location.replace('/');
     }
   },
   methods: {

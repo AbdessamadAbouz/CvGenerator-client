@@ -8,7 +8,7 @@
       <div class='col-md-3'>
         <side-bar />
       </div>
-      <div class="col-md-9">
+      <div class="col-md-9" v-if='authenticated'>
         <h1>Generate Resume</h1>
         <img src="~/assets/add.png" height="100vh">
         <hr>
