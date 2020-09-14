@@ -1,9 +1,27 @@
 <template>
   <div>
     <div class="container">
-      <h1 class="pt-3">Home</h1>
 
     </div>
+    <div class="py-5" v-if="!authenticated">
+      <div class="row" >
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-4">
+          <h6 style="color:blue;" class="mb-0">Fast. Easy. Effective.</h6>
+          <h1 class="mb-0">The Best CV Maker Online.</h1>
+          <footer class="blockquote-footer mb-4"> If a sheet of paper represents your entire work life, personality, and skills, it better be a pretty amazing piece of paper—
+            Let CvGenerator do the heavy lifting.</footer>
+            <div class="text-right pr-5">
+              <b-button variant="info">Join for free now</b-button>
+            </div>
+          </div>
+          <div class="col-md-4">
+            
+          </div>
+        </div>
+
+      </div>
     <div class="row px-5 pt-3">
       <div class='col-md-3'>
         <side-bar />
