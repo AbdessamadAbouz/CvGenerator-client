@@ -46,6 +46,11 @@
         next
       </b-button>
     </template>
+    <template v-if="next == 6">
+      <b-button block variant="outline-dark" @click="apply()">
+        Apply
+      </b-button>
+    </template>
   </div>
 </template>
 
@@ -85,6 +90,10 @@ export default {
       async getPersonalInfos() {
         this.$axios.get('/user/personal-infos').then(response => (this.personal_infos = response.data.personal_infos));
       },
+      apply() {
+        this.prev = 0
+        this.next = 1
+      }
     }
 }
 </script>

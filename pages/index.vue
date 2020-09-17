@@ -31,7 +31,7 @@
         <img src="~/assets/add.png" height="100vh">
         <b-button @click="modalShow = !modalShow">Open Modal</b-button>
 
-        <b-modal v-model="modalShow">
+        <b-modal hide-footer="true" v-model="modalShow">
           <resume-fill />
         </b-modal>
         <hr>
