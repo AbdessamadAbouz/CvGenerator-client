@@ -17,7 +17,7 @@
             </div>
           </div>
           <div class="col-md-4">
-            
+
           </div>
         </div>
 
@@ -29,6 +29,11 @@
       <div class="col-md-9" v-if='authenticated'>
         <h1>Generate Resume</h1>
         <img src="~/assets/add.png" height="100vh">
+        <b-button @click="modalShow = !modalShow">Open Modal</b-button>
+
+        <b-modal v-model="modalShow">
+          <resume-fill />
+        </b-modal>
         <hr>
         <div class="pt-5">
           <h1>Your Resumes</h1>
@@ -41,10 +46,17 @@
 
 <script>
 import SideBar from '../layouts/partials/SideBar';
+import ResumeFill from '../layouts/partials/resume/resumeFill';
 
 export default {
   components: {
-    SideBar
+    SideBar,
+    ResumeFill,
+  },
+  data() {
+    return {
+      modalShow: false
+    }
   }
 }
 </script>
