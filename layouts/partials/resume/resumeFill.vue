@@ -5,6 +5,8 @@
         previous
       </b-button>
     </template>
+
+
     <template v-if="next == 1">
       <h4>Select personal infos to show on resume</h4>
       <div>
@@ -35,9 +37,107 @@
         </b-form-group>
       </div>
     </template>
+
+
     <template v-if='next == 2'>
-      second
+      <h4>Select experiences to show in resume</h4>
+      <div>
+        <b-form-group>
+          <b-form-checkbox-group id="checkbox-group-2" v-model="experiences_list" name="flavour-2">
+            <template v-for="exp in this.experiences">
+
+              <b-card title="" style="max-width: 30rem;" class="mb-2">
+                <div class="co-md-2">
+                  <b-form-checkbox :value="exp.id"></b-form-checkbox>
+                </div>
+                <div class="col-md-10">
+                  <b-card-text>
+                    <strong>Label : </strong> {{exp.societe}} <br>
+                    <strong>Description :</strong> {{exp.description}} <br>
+                    <strong>Duration :</strong> {{exp.date_debut}} {{exp.date_fin}}
+                  </b-card-text>
+                </div>
+              </b-card>
+            </template>
+          </b-form-checkbox-group>
+        </b-form-group>
+      </div>
     </template>
+
+
+    <template v-if='next == 3'>
+      <h4>Select formations to show in resume</h4>
+      <div>
+        <b-form-group>
+          <b-form-checkbox-group id="checkbox-group-2" v-model="formation_list" name="flavour-2">
+            <template v-for="formation in this.formations">
+
+              <b-card title="" style="max-width: 30rem;" class="mb-2">
+                <div class="co-md-2">
+                  <b-form-checkbox :value="formation.id"></b-form-checkbox>
+                </div>
+                <div class="col-md-10">
+                  <b-card-text>
+                    <strong>Label : </strong>{{formation.label}} <br>
+                    <strong>Title : </strong>  {{formation.titre}} <br>
+                    <strong>School name : </strong> {{formation.nom_ecole}} <br>
+                    {{formation.date_debut}} - {{formation.date_fin}}
+                  </b-card-text>
+                </div>
+              </b-card>
+            </template>
+          </b-form-checkbox-group>
+        </b-form-group>
+      </div>
+    </template>
+
+
+    <template v-if='next == 4'>
+      <h4>Select skills to show in resume</h4>
+      <div>
+        <b-form-group>
+          <b-form-checkbox-group id="checkbox-group-2" v-model="skill_list" name="flavour-2">
+            <template v-for="skill in this.skills">
+
+              <b-card title="" style="max-width: 30rem;" class="mb-2">
+                <div class="co-md-2">
+                  <b-form-checkbox :value="skill.id"></b-form-checkbox>
+                </div>
+                <div class="col-md-10">
+                  <b-card-text>
+                    <strong>{{skill.competence_type}}</strong> : {{skill.label}}
+                  </b-card-text>
+                </div>
+              </b-card>
+            </template>
+          </b-form-checkbox-group>
+        </b-form-group>
+      </div>
+    </template>
+
+    <template v-if='next == 5'>
+      <h4>Select languages to show in resume</h4>
+      <div>
+        <b-form-group>
+          <b-form-checkbox-group id="checkbox-group-2" v-model="language_list" name="flavour-2">
+            <template v-for="language in this.languages">
+
+              <b-card title="" style="max-width: 30rem;" class="mb-2">
+                <div class="co-md-2">
+                  <b-form-checkbox :value="language.id"></b-form-checkbox>
+                </div>
+                <div class="col-md-10">
+                  <b-card-text>
+                    <strong>{{language.label}}</strong> : {{language.level}}
+                  </b-card-text>
+                </div>
+              </b-card>
+            </template>
+          </b-form-checkbox-group>
+        </b-form-group>
+      </div>
+    </template>
+
     <div class="invalid-feedback d-block" v-if="message">
       {{message}}
     </div>
@@ -47,6 +147,8 @@
       </b-button>
     </template>
     <template v-if="next == 6">
+      <h5>If you are not sure about your infos, go back and re-check your choices.</h5>
+      
       <b-button block variant="outline-dark" @click="apply()">
         Apply
       </b-button>
@@ -64,18 +166,54 @@ export default {
         prev: 0,
         next: 1,
         personal_infos: null,
+        experiences: null,
+        formations: null,
+        skills: null,
+        languages: null,
+        language_list: [],
+        skill_list: [],
+        formation_list: [],
+        experiences_list: [],
         pers_infos: '',
         message: ''
       }
     },
     created() {
       this.getPersonalInfos()
+      this.getexperiences()
+      this.getformations()
+      this.getCompetences()
+      this.getlanguages()
     },
     methods: {
       increment() {
         if(this.next == 1) {
           if(!this.pers_infos) {
             this.message = "Should select one choice"
+            return 0
+          }
+        }
+        else if(this.next == 2) {
+          if(!this.experiences_list.length) {
+            this.message = "Should select at least on experience"
+            return 0
+          }
+        }
+        else if(this.next == 3) {
+          if(!this.formation_list.length) {
+            this.message = "Should Select at least on formation"
+            return 0
+          }
+        }
+        else if(this.next == 4) {
+          if(!this.skill_list.length) {
+            this.message = "Should select skills"
+            return 0
+          }
+        }
+        else {
+          if(!this.language_list.length) {
+            this.message = "Should select a language"
             return 0
           }
         }
@@ -90,7 +228,20 @@ export default {
       async getPersonalInfos() {
         this.$axios.get('/user/personal-infos').then(response => (this.personal_infos = response.data.personal_infos));
       },
+      async getexperiences() {
+        this.$axios.get('/user/experiences').then(response => (this.experiences = response.data.experiences));
+      },
+      async getformations() {
+        this.$axios.get('/user/formations').then(response => (this.formations = response.data.formations));
+      },
+      async getCompetences() {
+        this.$axios.get('/user/competences').then(response => (this.skills = response.data.competences));
+      },
+      async getlanguages() {
+        this.$axios.get('/user/langues').then(response => (this.languages = response.data.langues));
+      },
       apply() {
+        this.message = "Your resume has been created succesfully!!"
         this.prev = 0
         this.next = 1
       }
