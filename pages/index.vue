@@ -26,10 +26,11 @@
       <div class='col-md-3'>
         <side-bar />
       </div>
-      <div class="col-md-9" v-if='authenticated'>
+      <div class="col-md-6" v-if='authenticated'>
         <h1>Generate Resume</h1>
-        <img src="~/assets/add.png" height="100vh">
-        <b-button @click="modalShow = !modalShow">Open Modal</b-button>
+        <p>Click on the button bellow and fill your information in order to generate your first resume, make your choice on the content of your resume by filling the form and start downloading your resume.</p>
+        <h5 class="">it is for free.</h5>
+        <img class="mt-3 ml-3" src="~/assets/add.png" height="80vh" @click="modalShow = !modalShow">
 
         <b-modal hide-footer="true" v-model="modalShow">
           <resume-fill />
