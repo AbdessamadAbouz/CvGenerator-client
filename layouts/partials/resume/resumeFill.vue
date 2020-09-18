@@ -148,7 +148,7 @@
     </template>
     <template v-if="next == 6">
       <h5>If you are not sure about your infos, go back and re-check your choices.</h5>
-      
+      {{this.choices.info_choice}}
       <b-button block variant="outline-dark" @click="apply()">
         Apply
       </b-button>
@@ -170,6 +170,16 @@ export default {
         formations: null,
         skills: null,
         languages: null,
+        choices: {
+          info_choice: null,
+        },
+        form: {
+          personal_info_id: '',
+          competence_ids: [],
+          experience_ids: [],
+          formation_ids: [],
+          langue_ids: [],
+        },
         language_list: [],
         skill_list: [],
         formation_list: [],
@@ -211,7 +221,7 @@ export default {
             return 0
           }
         }
-        else {
+        else if(this.next == 5){
           if(!this.language_list.length) {
             this.message = "Should select a language"
             return 0
@@ -220,6 +230,9 @@ export default {
         this.message = ''
         this.next = this.next + 1
         this.prev = this.prev + 1
+        if(this.next == 6) {
+          this.getInfo(this.pers_infos)
+        }
       },
       Decrement() {
         this.next = this.next - 1
@@ -240,8 +253,29 @@ export default {
       async getlanguages() {
         this.$axios.get('/user/langues').then(response => (this.languages = response.data.langues));
       },
+      async getInfo(id) {
+        this.$axios.get('user/personal-infos/'+id).then(response => (this.choices.info_choice = response.data.Personal_infos))
+      },
+      // async getOneExperience(id) {
+      //   this.$axios.get('user/personal-infos/'+id).then(response => (this.choices.exp_choice.append(response.data.experience)))
+      // }
       apply() {
-        this.message = "Your resume has been created succesfully!!"
+        this.form.formation_ids = this.formation_list
+        this.form.personal_info_id = this.pers_infos
+        this.form.competence_ids = this.skill_list
+        this.form.experience_ids = this.experiences_list
+        this.form.langue_ids = this.language_list
+
+        try {
+          this.$axios.post('user/generate-resume',this.form).then(response => (
+          this.message = response.data.message,
+          this.clear()
+          ))
+        }catch(e) {
+
+        }
+        // this.message = "Your resume has been created succesfully!!"
+        // this.message = this.form
         this.prev = 0
         this.next = 1
       }

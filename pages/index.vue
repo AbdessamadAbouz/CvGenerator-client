@@ -39,6 +39,16 @@
         <div class="pt-5">
           <h1>Your Resumes</h1>
           LIST
+          <template v-for="resume in resumes">
+            <b-card class="mb-3">
+              <strong>Resume Reference :</strong> {{resume.id}} <br>
+              <strong>Created at :</strong> {{resume.created_at}}
+              <b-button style="float:right" variant="outline-success" @click="generateResume(resume.id)">
+                Generate Resume
+              </b-button>
+
+            </b-card>
+          </template>
         </div>
       </div>
   </div>
@@ -56,7 +66,19 @@ export default {
   },
   data() {
     return {
-      modalShow: false
+      modalShow: false,
+      resumes: null
+    }
+  },
+  created() {
+    this.getResumes()
+  },
+  methods: {
+    async getResumes() {
+      this.$axios.get('user/resumes').then(response => {this.resumes = response.data.resumes})
+    },
+    async generateResume(id) {
+      
     }
   }
 }
