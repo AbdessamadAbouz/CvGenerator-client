@@ -58,6 +58,7 @@
 <script>
 import SideBar from '../layouts/partials/SideBar';
 import ResumeFill from '../layouts/partials/resume/resumeFill';
+import FileSaver from 'file-saver'
 
 export default {
   components: {
@@ -67,7 +68,8 @@ export default {
   data() {
     return {
       modalShow: false,
-      resumes: null
+      resumes: null,
+      answer: null
     }
   },
   created() {
@@ -75,10 +77,18 @@ export default {
   },
   methods: {
     async getResumes() {
-      this.$axios.get('user/resumes').then(response => {this.resumes = response.data.resumes})
+      this.$axios.get('user/resumes').then(
+        response => {
+          this.resumes = response.data.resumes
+        }
+      )
     },
     async generateResume(id) {
-      
+      this.$axios.get('user/resumes/'+id, {
+        responseType: 'blob',
+      }).then(response => {
+          this.answer = 'test'
+      }).catch(console.error)
     }
   }
 }
