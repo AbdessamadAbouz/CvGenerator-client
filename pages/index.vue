@@ -46,7 +46,7 @@
               <b-button style="float:right" variant="outline-success" @click="generateResume(resume.id)">
                 Generate Resume
               </b-button>
-
+              {{answer}}
             </b-card>
           </template>
         </div>
@@ -56,9 +56,10 @@
 </template>
 
 <script>
-import SideBar from '../layouts/partials/SideBar';
-import ResumeFill from '../layouts/partials/resume/resumeFill';
+import SideBar from '../layouts/partials/SideBar'
+import ResumeFill from '../layouts/partials/resume/resumeFill'
 import FileSaver from 'file-saver'
+
 
 export default {
   components: {
@@ -69,7 +70,7 @@ export default {
     return {
       modalShow: false,
       resumes: null,
-      answer: null
+      answer: 'empty'
     }
   },
   created() {
@@ -78,16 +79,16 @@ export default {
   methods: {
     async getResumes() {
       this.$axios.get('user/resumes').then(
-        response => {
+        response => (
           this.resumes = response.data.resumes
-        }
+        )
       )
     },
     async generateResume(id) {
       this.$axios.get('user/resumes/'+id, {
         responseType: 'blob',
       }).then(response => {
-          this.answer = 'test'
+        FileSaver.saveAs(new Blob([response.data], { type: 'application/pdf' }))
       }).catch(console.error)
     }
   }
